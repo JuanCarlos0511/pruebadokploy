@@ -151,6 +151,10 @@
                     <input type="email" id="create_email" required>
                 </div>
                 <div class="form-group">
+                    <label>Año:</label>
+                    <input type="number" id="create_year" min="1900" max="2100" placeholder="Ej: 2000">
+                </div>
+                <div class="form-group">
                     <label>Contraseña:</label>
                     <input type="password" id="create_password" required>
                 </div>
@@ -172,6 +176,10 @@
                     <input type="email" id="edit_email" required>
                 </div>
                 <div class="form-group">
+                    <label>Año:</label>
+                    <input type="number" id="edit_year" min="1900" max="2100" placeholder="Ej: 2000">
+                </div>
+                <div class="form-group">
                     <label>Contraseña (dejar vacío para no cambiar):</label>
                     <input type="password" id="edit_password">
                 </div>
@@ -189,6 +197,7 @@
                         <th>ID</th>
                         <th>Nombre</th>
                         <th>Email</th>
+                        <th>Año</th>
                         <th>Fecha Creación</th>
                         <th>Acciones</th>
                     </tr>
@@ -212,7 +221,8 @@
             const data = {
                 name: document.getElementById('create_name').value,
                 email: document.getElementById('create_email').value,
-                password: document.getElementById('create_password').value
+                password: document.getElementById('create_password').value,
+                year: document.getElementById('create_year').value
             };
 
             try {
@@ -244,7 +254,8 @@
             const id = document.getElementById('edit_id').value;
             const data = {
                 name: document.getElementById('edit_name').value,
-                email: document.getElementById('edit_email').value
+                email: document.getElementById('edit_email').value,
+                year: document.getElementById('edit_year').value
             };
 
             const password = document.getElementById('edit_password').value;
@@ -289,9 +300,10 @@
                         <td>${user.id}</td>
                         <td>${user.name}</td>
                         <td>${user.email}</td>
+                        <td>${user.year || '-'}</td>
                         <td>${new Date(user.created_at).toLocaleDateString()}</td>
                         <td class="actions">
-                            <button class="btn btn-primary" onclick="editUser(${user.id}, '${user.name}', '${user.email}')">Editar</button>
+                            <button class="btn btn-primary" onclick="editUser(${user.id}, '${user.name}', '${user.email}', ${user.year || 'null'})">Editar</button>
                             <button class="btn btn-danger" onclick="deleteUser(${user.id})">Eliminar</button>
                         </td>
                     `;
@@ -303,10 +315,11 @@
         }
 
         // Preparar edición
-        function editUser(id, name, email) {
+        function editUser(id, name, email, year) {
             document.getElementById('edit_id').value = id;
             document.getElementById('edit_name').value = name;
             document.getElementById('edit_email').value = email;
+            document.getElementById('edit_year').value = year || '';
             document.getElementById('edit_password').value = '';
             document.getElementById('editSection').style.display = 'block';
             document.getElementById('editSection').scrollIntoView({ behavior: 'smooth' });

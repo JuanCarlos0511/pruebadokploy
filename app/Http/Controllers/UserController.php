@@ -30,12 +30,14 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6',
+            'year' => 'nullable|integer|min:1900|max:2100',
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'year' => $request->year,
         ]);
 
         return response()->json($user, 201);
@@ -50,6 +52,7 @@ class UserController extends Controller
             'name' => 'sometimes|required|string|max:255',
             'email' => 'sometimes|required|string|email|max:255|unique:users,email,'.$id,
             'password' => 'sometimes|required|string|min:6',
+            'year' => 'nullable|integer|min:1900|max:2100',
         ]);
 
         if ($request->has('name')) {
@@ -60,6 +63,9 @@ class UserController extends Controller
         }
         if ($request->has('password')) {
             $user->password = Hash::make($request->password);
+        }
+        if ($request->has('year')) {
+            $user->year = $request->year;
         }
 
         $user->save();
